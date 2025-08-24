@@ -1,0 +1,76 @@
+<div class="flex flex-wrap space-y-4 md:flex-nowrap md:space-y-0">
+  <%= render 'shared/settings_nav' %>
+  <div class="flex-grow max-w-xl mx-auto">
+    <h1 class="text-4xl font-bold mb-4">SMS</h1>
+    <div class="alert alert-success mb-4">
+      <%= svg_icon('check', class: 'w-6 h-6') %>
+      <div>
+        <p class="font-bold">
+          SMS Features Enabled
+        </p>
+        <p class="text-gray-700">
+          SMS notifications and document signing requests via SMS are now available.
+        </p>
+      </div>
+    </div>
+    
+    <%= form_with(model: current_account.encrypted_configs.find_or_initialize_by(key: 'sms_settings'), 
+                  url: settings_sms_path, 
+                  method: :post, 
+                  local: true, 
+                  class: 'space-y-4') do |f| %>
+      <%= f.hidden_field :key, value: 'sms_settings' %>
+      
+      <div class="form-control">
+        <label class="label">
+          <span class="label-text font-medium">SMS Provider</span>
+        </label>
+        <%= f.select :provider, 
+            options_for_select([
+              ['Twilio', 'twilio'],
+              ['AWS SNS', 'aws_sns'],
+              ['Disabled', 'disabled']
+            ], f.object.value&.dig('provider') || 'disabled'),
+            {},
+            { class: 'select select-bordered w-full' } %>
+      </div>
+      
+      <div class="form-control">
+        <label class="label">
+          <span class="label-text font-medium">API Key / Account SID</span>
+        </label>
+        <%= f.text_field :api_key, 
+            value: f.object.value&.dig('api_key'),
+            class: 'input input-bordered w-full' %>
+      </div>
+      
+      <div class="form-control">
+        <label class="label">
+          <span class="label-text font-medium">API Secret / Auth Token</span>
+        </label>
+        <%= f.password_field :api_secret, 
+            value: f.object.value&.dig('api_secret'),
+            class: 'input input-bordered w-full' %>
+      </div>
+      
+      <div class="form-control">
+        <label class="label">
+          <span class="label-text font-medium">From Phone Number</span>
+        </label>
+        <%= f.text_field :from_number, 
+            value: f.object.value&.dig('from_number'),
+            placeholder: '+1234567890',
+            class: 'input input-bordered w-full' %>
+      </div>
+      
+      <div class="flex">
+        <%= f.submit 'Save Settings', 
+            class: 'btn btn-primary',
+            data: { 
+              disable_with: 'Saving...' 
+            } %>
+      </div>
+    <% end %>
+  </div>
+  <div class="w-0 md:w-52"></div>
+</div>

@@ -1,0 +1,47 @@
+<div class="form-control">
+  <%= form_with(model: current_account.account_configs.find_or_initialize_by(key: 'company_logo'), 
+                url: personalization_settings_path, 
+                method: :post, 
+                multipart: true, 
+                local: true, 
+                class: 'space-y-4') do |f| %>
+    <%= f.hidden_field :key, value: 'company_logo' %>
+    
+    <div class="space-y-2">
+      <label class="label">
+        <span class="label-text font-medium">
+          <%= t('company_logo') %>
+        </span>
+      </label>
+      
+      <div class="flex items-center space-x-4">
+        <% if current_account.account_configs.find_by(key: 'company_logo')&.value.present? %>
+          <div class="avatar">
+            <div class="w-12 h-12 rounded">
+              <img src="<%= current_account.account_configs.find_by(key: 'company_logo').value %>" alt="Company Logo">
+            </div>
+          </div>
+        <% end %>
+        
+        <%= f.file_field :logo_file, 
+            accept: 'image/*',
+            class: 'file-input file-input-bordered flex-1',
+            data: { 
+              action: 'change->file-dropzone#change' 
+            } %>
+      </div>
+      
+      <p class="text-sm text-gray-600">
+        <%= t('upload_your_company_logo_to_display_on_documents_and_forms') %>
+      </p>
+    </div>
+    
+    <div class="flex">
+      <%= f.submit t('save'), 
+          class: 'btn btn-primary',
+          data: { 
+            disable_with: t('saving') 
+          } %>
+    </div>
+  <% end %>
+</div>

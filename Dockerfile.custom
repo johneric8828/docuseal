@@ -1,0 +1,19 @@
+FROM docuseal/docuseal:latest
+
+# Copy our modified files to override the defaults
+COPY lib/ability.rb /app/lib/ability.rb
+COPY lib/docuseal.rb /app/lib/docuseal.rb
+COPY app/controllers/personalization_settings_controller.rb /app/app/controllers/personalization_settings_controller.rb
+COPY app/views/personalization_settings/_logo_form.html.erb /app/app/views/personalization_settings/_logo_form.html.erb
+COPY app/views/sms_settings/index.html.erb /app/app/views/sms_settings/index.html.erb
+COPY app/views/sso_settings/index.html.erb /app/app/views/sso_settings/index.html.erb
+COPY app/views/submissions/_bulk_send_placeholder.html.erb /app/app/views/submissions/_bulk_send_placeholder.html.erb
+COPY app/views/templates_code_modal/_placeholder.html.erb /app/app/views/templates_code_modal/_placeholder.html.erb
+COPY app/views/notifications_settings/_reminder_placeholder.html.erb /app/app/views/notifications_settings/_reminder_placeholder.html.erb
+COPY app/views/submissions/_send_sms_button.html.erb /app/app/views/submissions/_send_sms_button.html.erb
+
+# Clear Rails cache to ensure changes take effect
+RUN rm -rf /app/tmp/cache/* || true
+
+# Set working directory
+WORKDIR /app

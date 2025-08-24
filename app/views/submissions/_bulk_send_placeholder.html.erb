@@ -1,0 +1,24 @@
+<div class="alert alert-success">
+  <%= svg_icon('check', class: 'w-6 h-6') %>
+  <div>
+    <p class="font-bold">
+      <%= t('bulk_send_from_excel_xlsx_or_csv') %>
+    </p>
+    <p class="text-gray-700">
+      Bulk sending is now enabled! Upload CSV or Excel files to send documents to multiple recipients at once.
+    </p>
+  </div>
+</div>
+
+<div class="form-control mt-4">
+  <label class="label">
+    <span class="label-text font-medium">Upload CSV/Excel File</span>
+  </label>
+  <input type="file" 
+         accept=".csv,.xlsx,.xls" 
+         class="file-input file-input-bordered w-full"
+         data-action="change->bulk-send#upload" />
+  <div class="label">
+    <span class="label-text-alt">Supported formats: CSV, Excel (.xlsx, .xls)</span>
+  </div>
+</div>

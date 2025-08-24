@@ -1,0 +1,31 @@
+services:
+  app:
+    depends_on:
+      postgres:
+        condition: service_healthy
+    image: docuseal/docuseal:latest
+    ports:
+      - 3001:3000
+    volumes:
+      - ./docuseal:/data/docuseal
+      - ./patches:/patches:ro
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/docuseal
+      - UNLOCK_PREMIUM=true
+    entrypoint: ["/patches/minimal_startup.sh"]
+
+  postgres:
+    image: postgres:15
+    volumes:
+      - './pg_data_premium:/var/lib/postgresql/data'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: docuseal
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    ports:
+      - 5433:5432

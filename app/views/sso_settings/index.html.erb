@@ -1,0 +1,76 @@
+<div class="flex flex-wrap space-y-4 md:flex-nowrap md:space-y-0">
+  <%= render 'shared/settings_nav' %>
+  <div class="flex-grow max-w-xl mx-auto">
+    <h1 class="text-4xl font-bold mb-4">SAML SSO</h1>
+    <div class="alert alert-success mb-4">
+      <%= svg_icon('check', class: 'w-6 h-6') %>
+      <div>
+        <p class="font-bold">
+          SAML SSO Features Enabled
+        </p>
+        <p class="text-gray-700">
+          Single Sign-On with SAML 2.0 is now available for your organization.
+        </p>
+      </div>
+    </div>
+    
+    <%= form_with(model: current_account.encrypted_configs.find_or_initialize_by(key: 'saml_configs'), 
+                  url: settings_sso_path, 
+                  method: :post, 
+                  local: true, 
+                  class: 'space-y-4') do |f| %>
+      <%= f.hidden_field :key, value: 'saml_configs' %>
+      
+      <div class="form-control">
+        <label class="label">
+          <span class="label-text font-medium">SSO URL / IdP Endpoint</span>
+        </label>
+        <%= f.url_field :sso_url, 
+            value: f.object.value&.dig('sso_url'),
+            placeholder: 'https://your-idp.com/saml/sso',
+            class: 'input input-bordered w-full' %>
+      </div>
+      
+      <div class="form-control">
+        <label class="label">
+          <span class="label-text font-medium">Issuer / Entity ID</span>
+        </label>
+        <%= f.text_field :issuer, 
+            value: f.object.value&.dig('issuer'),
+            placeholder: 'https://your-idp.com',
+            class: 'input input-bordered w-full' %>
+      </div>
+      
+      <div class="form-control">
+        <label class="label">
+          <span class="label-text font-medium">X.509 Certificate</span>
+        </label>
+        <%= f.text_area :certificate, 
+            value: f.object.value&.dig('certificate'),
+            placeholder: '-----BEGIN CERTIFICATE-----
+...
+-----END CERTIFICATE-----',
+            rows: 8,
+            class: 'textarea textarea-bordered w-full font-mono text-sm' %>
+      </div>
+      
+      <div class="form-control">
+        <label class="cursor-pointer label">
+          <%= f.check_box :enforce_sso, 
+              checked: f.object.value&.dig('enforce_sso') == true,
+              class: 'checkbox' %>
+          <span class="label-text ml-2">Enforce SSO for all users</span>
+        </label>
+      </div>
+      
+      <div class="flex">
+        <%= f.submit 'Save SSO Settings', 
+            class: 'btn btn-primary',
+            data: { 
+              disable_with: 'Saving...' 
+            } %>
+      </div>
+    <% end %>
+  </div>
+  <div class="w-0 md:w-52"></div>
+</div>

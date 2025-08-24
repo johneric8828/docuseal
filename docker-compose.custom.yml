@@ -1,0 +1,31 @@
+services:
+  app:
+    depends_on:
+      postgres:
+        condition: service_healthy
+    build:
+      context: .
+      dockerfile: Dockerfile.custom
+    ports:
+      - 3001:3000
+    volumes:
+      - ./docuseal:/data/docuseal
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/docuseal
+      - ADMIN_API_TOKEN=ADMIN_FULL_ACCESS_TOKEN_2024
+
+  postgres:
+    image: postgres:15
+    volumes:
+      - './pg_data:/var/lib/postgresql/data'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: docuseal
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    ports:
+      - 5432:5432

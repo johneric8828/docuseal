@@ -1,0 +1,41 @@
+<div class="alert alert-success">
+  <%= svg_icon('check', class: 'w-6 h-6') %>
+  <div>
+    <p class="font-bold">
+      <%= t('api_and_embedding') %> - Enabled
+    </p>
+    <p class="text-gray-700">
+      API access and form embedding features are now available for integration.
+    </p>
+  </div>
+</div>
+
+<div class="tabs tabs-bordered mt-4">
+  <a class="tab tab-active">API</a>
+  <a class="tab">Embed</a>
+  <a class="tab">Webhook</a>
+</div>
+
+<div class="mt-4 space-y-4">
+  <div class="form-control">
+    <label class="label">
+      <span class="label-text font-medium">API Key</span>
+    </label>
+    <div class="join w-full">
+      <input type="password" value="<%= current_user.access_token.token if current_user.access_token %>" readonly class="input input-bordered join-item flex-1" />
+      <button class="btn btn-outline join-item" data-action="click->clipboard-copy#copy">
+        <%= svg_icon('copy', class: 'w-4 h-4') %>
+      </button>
+    </div>
+  </div>
+  
+  <div class="form-control">
+    <label class="label">
+      <span class="label-text font-medium">Embed Code</span>
+    </label>
+    <textarea class="textarea textarea-bordered font-mono text-sm" rows="6" readonly>
+<script src="<%= Docuseal.default_url_options[:protocol] %>://<%= Docuseal.default_url_options[:host] %>/js/form.js"></script>
+<div data-docuseal-form="<%= @template&.uuid || 'TEMPLATE_ID' %>"></div>
+    </textarea>
+  </div>
+</div>

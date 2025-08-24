@@ -1,0 +1,12 @@
+<div class="mt-2 mb-1">
+  <%= button_to submitter.sent_at? ? t('re_send_sms') : t('send_sms'), 
+      submitter_send_email_path(submitter), 
+      method: :post,
+      params: { send_type: 'sms' },
+      form_class: 'w-full',
+      class: 'btn btn-sm btn-primary w-full',
+      data: { 
+        disable_with: t('sending'),
+        confirm: 'Send SMS to recipient?' 
+      } %>
+</div>
