@@ -161,6 +161,7 @@ Rails.application.routes.draw do
   resources :submitters, only: %i[], param: 'slug' do
     resources :download, only: %i[index], controller: 'submissions_download'
     resources :send_email, only: %i[create], controller: 'submitters_send_email'
+    resources :send_sms, only: %i[create], controller: 'submitters_send_sms'
     resources :debug, only: %i[index], controller: 'submissions_debug' if Rails.env.development?
   end
 

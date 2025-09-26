@@ -1,3 +1,15 @@
 <div class="form-control">
-  <%= render 'sms_settings/placeholder' %>
+  <% if Sms.configured_for?(current_account) %>
+    <label class="label cursor-pointer">
+      <%= check_box_tag :send_sms, '1', params[:send_sms] == '1', class: 'checkbox checkbox-sm' %>
+      <span class="label-text ml-2"><%= t('send_sms') %></span>
+    </label>
+  <% else %>
+    <div class="alert alert-info">
+      <div class="flex items-center space-x-2">
+        <%= svg_icon('info_circle', class: 'w-5 h-5') %>
+        <span><%= t('sms_is_not_configured') %>. <%= link_to t('configure_sms'), settings_sms_path, class: 'link' %></span>
+      </div>
+    </div>
+  <% end %>
 </div>

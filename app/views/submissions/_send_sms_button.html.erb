@@ -1,5 +1,19 @@
 <div class="mt-2 mb-1">
-  <div class="tooltip w-full" data-tip="<%= t('unlock_with_docuseal_pro') %>">
-    <%= link_to submitter.sent_at? ? t('re_send_sms') : t('send_sms'), Docuseal.multitenant? ? console_redirect_index_path(redir: "#{Docuseal::CONSOLE_URL}/plans") : "#{Docuseal::CLOUD_URL}/sign_up?#{{ redir: "#{Docuseal::CONSOLE_URL}/on_premises" }.to_query}", class: 'btn btn-sm btn-primary text-gray-400 w-full' %>
-  </div>
+  <% if Sms.configured_for?(submitter.account) && submitter.phone.present? %>
+    <%= form_for '', url: submitter_send_sms_index_path(submitter), method: :post, html: { class: 'w-full' } do |f| %>
+      <%= f.button submitter.sent_at? ? t('re_send_sms') : t('send_sms'), class: 'btn btn-sm btn-primary w-full' %>
+    <% end %>
+  <% elsif submitter.phone.blank? %>
+    <div class="tooltip w-full" data-tip="<%= t('phone_number_is_required') %>">
+      <button class="btn btn-sm btn-primary btn-disabled text-gray-400 w-full">
+        <%= submitter.sent_at? ? t('re_send_sms') : t('send_sms') %>
+      </button>
+    </div>
+  <% else %>
+    <div class="tooltip w-full" data-tip="<%= t('sms_is_not_configured') %>">
+      <button class="btn btn-sm btn-primary btn-disabled text-gray-400 w-full">
+        <%= submitter.sent_at? ? t('re_send_sms') : t('send_sms') %>
+      </button>
+    </div>
+  <% end %>
 </div>
