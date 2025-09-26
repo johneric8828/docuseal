@@ -34,7 +34,10 @@ jobs:
       uses: docker/metadata-action@v4
       with:
         images: docuseal/docuseal
-        tags: latest,${{ inputs.version }}
+        tags: |
+          type=raw,value=latest,enable={{is_default_branch}}
+          type=raw,value=${{ inputs.version }}
+          type=raw,value=test-${{ inputs.version }},enable=${{ contains(inputs.version, 'test') }}
 
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v3
