@@ -558,6 +558,10 @@ GEM
     turbo-rails (2.0.11)
       actionpack (>= 6.0.0)
       railties (>= 6.0.0)
+    twilio-ruby (7.8.2)
+      faraday (>= 0.9, < 3.0)
+      jwt (>= 1.5, < 4.0)
+      nokogiri (>= 1.6, < 2.0)
     twitter_cldr (6.12.1)
       camertron-eprun
       cldr-plurals-runtime-rb (~> 1.1)
@@ -661,6 +665,7 @@ DEPENDENCIES
   sqlite3
   strip_attributes
   turbo-rails
+  twilio-ruby
   twitter_cldr
   tzinfo-data
   web-console

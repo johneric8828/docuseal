@@ -44,6 +44,7 @@ gem 'sidekiq'
 gem 'sqlite3', require: false
 gem 'strip_attributes'
 gem 'turbo-rails'
+gem 'twilio-ruby', require: false
 gem 'twitter_cldr', require: false
 gem 'tzinfo-data'
 
