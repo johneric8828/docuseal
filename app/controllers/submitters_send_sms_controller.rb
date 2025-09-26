@@ -10,7 +10,7 @@ class SubmittersSendSmsController < ApplicationController
                            alert: I18n.t('phone_number_is_required')
     end
 
-    unless Sms.configured_for?(@submitter.account)
+    unless Sms.configured?(@submitter.account)
       return redirect_back fallback_location: submission_path(@submitter.submission),
                            alert: I18n.t('sms_is_not_configured')
     end

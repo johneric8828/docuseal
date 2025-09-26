@@ -1,5 +1,5 @@
 <div class="form-control">
-  <% can_send_sms = Sms.configured_for?(current_account) %>
+  <% can_send_sms = Sms.configured?(current_account) %>
   <% if can_send_sms %>
     <%= f.label :send_sms, for: uuid = SecureRandom.uuid, class: 'flex items-center cursor-pointer' do %>
       <%= f.check_box :send_sms, id: uuid, class: 'base-checkbox', checked: !local_assigns.key?(:resend_sms) %>

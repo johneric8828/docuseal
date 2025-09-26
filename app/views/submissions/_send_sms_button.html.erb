@@ -1,5 +1,5 @@
 <div class="mt-2 mb-1">
-  <% if Sms.configured_for?(submitter.account) && submitter.phone.present? %>
+  <% if Sms.configured?(submitter.account) && submitter.phone.present? %>
     <%= form_for '', url: submitter_send_sms_index_path(submitter), method: :post, html: { class: 'w-full' } do |f| %>
       <%= f.button submitter.sent_at? ? t('re_send_sms') : t('send_sms'), class: 'btn btn-sm btn-primary w-full' %>
     <% end %>
